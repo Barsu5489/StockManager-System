@@ -13,4 +13,22 @@ class Product < ApplicationRecord
   def low_stock?
     quantity <= LOW_STOCK_THRESHOLD
   end
+
+  def self.to_csv
+    require "csv"
+    CSV.generate(headers: true) do |csv|
+      csv << [ "Name", "Description", "Price", "Quantity", "Low Stock", "Created At", "Updated At" ]
+      all.find_each do |product|
+        csv << [
+          product.name,
+          product.description,
+          product.price,
+          product.quantity,
+          product.low_stock? ? "Yes" : "No",
+          product.created_at,
+          product.updated_at
+        ]
+      end
+    end
+  end
 end
