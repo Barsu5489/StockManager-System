@@ -1,0 +1,67 @@
+<aside class="fixed left-0 top-0 h-screen w-60 bg-dark-800 border-r border-dark-600 flex flex-col z-40">
+  <!-- Logo Section -->
+  <div class="h-16 flex items-center px-5 border-b border-dark-600">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 bg-accent-blue rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+      </div>
+      <span class="font-semibold text-lg text-text-primary">Inventory</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 py-4 px-3 overflow-y-auto">
+    <div class="space-y-1">
+      <%= link_to products_path, class: "flex items-center gap-3 h-11 px-3 rounded-lg transition-colors duration-150 #{current_page?(products_path) ? 'bg-accent-blue/10 text-accent-blue border-l-3 border-accent-blue' : 'text-text-secondary hover:bg-dark-700 hover:text-text-primary'}" do %>
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        <span class="font-medium">Products</span>
+      <% end %>
+
+      <%= link_to products_path(filter: 'low_stock'), class: "flex items-center gap-3 h-11 px-3 rounded-lg transition-colors duration-150 #{params[:filter] == 'low_stock' ? 'bg-accent-amber/10 text-accent-amber border-l-3 border-accent-amber' : 'text-text-secondary hover:bg-dark-700 hover:text-text-primary'}" do %>
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span class="font-medium">Low Stock</span>
+        <% low_count = Current.session&.user&.products&.low_stock&.count || 0 %>
+        <% if low_count > 0 %>
+          <span class="ml-auto bg-accent-amber/20 text-accent-amber text-xs font-semibold px-2 py-0.5 rounded-full"><%= low_count %></span>
+        <% end %>
+      <% end %>
+
+      <%= link_to new_product_path, class: "flex items-center gap-3 h-11 px-3 rounded-lg transition-colors duration-150 #{current_page?(new_product_path) ? 'bg-accent-blue/10 text-accent-blue border-l-3 border-accent-blue' : 'text-text-secondary hover:bg-dark-700 hover:text-text-primary'}" do %>
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        <span class="font-medium">Add Product</span>
+      <% end %>
+
+      <%= link_to products_path(format: :csv), class: "flex items-center gap-3 h-11 px-3 rounded-lg text-text-secondary hover:bg-dark-700 hover:text-text-primary transition-colors duration-150" do %>
+        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        <span class="font-medium">Export CSV</span>
+      <% end %>
+    </div>
+  </nav>
+
+  <!-- User Section -->
+  <div class="p-3 border-t border-dark-600">
+    <div class="flex items-center gap-3 px-3 py-2">
+      <div class="w-8 h-8 bg-dark-600 rounded-full flex items-center justify-center">
+        <span class="text-sm font-medium text-text-secondary"><%= Current.session&.user&.email_address&.first&.upcase %></span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-text-primary truncate"><%= Current.session&.user&.email_address %></p>
+      </div>
+      <%= button_to session_path, method: :delete, class: "p-1.5 text-text-secondary hover:text-text-primary hover:bg-dark-700 rounded-lg transition-colors duration-150 cursor-pointer", title: "Logout" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</aside>
