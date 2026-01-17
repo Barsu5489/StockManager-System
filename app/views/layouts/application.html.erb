@@ -24,13 +24,83 @@
 
   <body class="min-h-screen bg-dark-900 text-text-primary">
     <% if authenticated? %>
+      <!-- Mobile Header -->
+      <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-dark-800 border-b border-dark-600 flex items-center justify-between px-4 z-50">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-accent-blue rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+            </svg>
+          </div>
+          <span class="font-semibold text-lg text-text-primary">Inventory</span>
+        </div>
+        <button id="mobile-menu-button" class="p-2 text-text-secondary hover:text-text-primary hover:bg-dark-700 rounded-lg transition-colors duration-150">
+          <svg id="menu-open-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="menu-close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Mobile Overlay -->
+      <div id="mobile-overlay" class="lg:hidden fixed inset-0 bg-black/50 z-40 hidden" aria-hidden="true"></div>
+
+      <!-- Sidebar -->
       <%= render "layouts/sidebar" %>
 
-      <main class="ml-60 min-h-screen">
-        <div class="p-8">
+      <main class="lg:ml-60 min-h-screen pt-16 lg:pt-0">
+        <div class="p-4 sm:p-6 lg:p-8">
           <%= yield %>
         </div>
       </main>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const menuButton = document.getElementById('mobile-menu-button');
+          const sidebar = document.getElementById('sidebar');
+          const overlay = document.getElementById('mobile-overlay');
+          const openIcon = document.getElementById('menu-open-icon');
+          const closeIcon = document.getElementById('menu-close-icon');
+
+          function toggleMenu() {
+            const isOpen = sidebar.classList.contains('translate-x-0');
+
+            if (isOpen) {
+              sidebar.classList.remove('translate-x-0');
+              sidebar.classList.add('-translate-x-full');
+              overlay.classList.add('hidden');
+              openIcon.classList.remove('hidden');
+              closeIcon.classList.add('hidden');
+            } else {
+              sidebar.classList.remove('-translate-x-full');
+              sidebar.classList.add('translate-x-0');
+              overlay.classList.remove('hidden');
+              openIcon.classList.add('hidden');
+              closeIcon.classList.remove('hidden');
+            }
+          }
+
+          if (menuButton) {
+            menuButton.addEventListener('click', toggleMenu);
+          }
+
+          if (overlay) {
+            overlay.addEventListener('click', toggleMenu);
+          }
+
+          // Close menu when clicking on a link (mobile)
+          const sidebarLinks = sidebar.querySelectorAll('a');
+          sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+              if (window.innerWidth < 1024) {
+                toggleMenu();
+              }
+            });
+          });
+        });
+      </script>
     <% else %>
       <main class="min-h-screen">
         <%= yield %>

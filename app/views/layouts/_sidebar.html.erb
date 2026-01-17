@@ -1,6 +1,6 @@
-<aside class="fixed left-0 top-0 h-screen w-60 bg-dark-800 border-r border-dark-600 flex flex-col z-40">
-  <!-- Logo Section -->
-  <div class="h-16 flex items-center px-5 border-b border-dark-600">
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-60 bg-dark-800 border-r border-dark-600 flex flex-col z-40 transition-transform duration-300 ease-in-out -translate-x-full lg:translate-x-0">
+  <!-- Logo Section (hidden on mobile since we have header) -->
+  <div class="h-16 hidden lg:flex items-center px-5 border-b border-dark-600">
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 bg-accent-blue rounded-lg flex items-center justify-center">
         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -10,6 +10,9 @@
       <span class="font-semibold text-lg text-text-primary">Inventory</span>
     </div>
   </div>
+
+  <!-- Mobile spacer for header -->
+  <div class="h-16 lg:hidden"></div>
 
   <!-- Navigation -->
   <nav class="flex-1 py-4 px-3 overflow-y-auto">
