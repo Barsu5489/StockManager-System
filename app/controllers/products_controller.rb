@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[ show edit update destroy increase_stock decrease_stock ]
 
   # GET /products or /products.json
   def index
@@ -54,6 +54,22 @@ class ProductsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to products_path, notice: "Product was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /products/1/increase_stock
+  def increase_stock
+    @product.increment!(:quantity)
+    redirect_to products_path, notice: "Stock increased for #{@product.name}."
+  end
+
+  # POST /products/1/decrease_stock
+  def decrease_stock
+    if @product.quantity > 0
+      @product.decrement!(:quantity)
+      redirect_to products_path, notice: "Stock decreased for #{@product.name}."
+    else
+      redirect_to products_path, alert: "Stock cannot go below zero."
     end
   end
 
