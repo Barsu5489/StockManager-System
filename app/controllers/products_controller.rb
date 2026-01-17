@@ -4,6 +4,8 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     @products = Product.all
+    @products = @products.search(params[:query]) if params[:query].present?
+    @products = @products.low_stock if params[:filter] == "low_stock"
     @low_stock_products = Product.low_stock
   end
 
