@@ -30,6 +30,8 @@ A real-time inventory management system built with Ruby on Rails 8, Hotwire, and
 
 No local Ruby installation required. Just need Docker and VS Code.
 
+> **Note:** The first time you build the Dev Container, it may take 5-15 minutes to download the Docker image, install Ruby, and run `bundle install`. Subsequent starts will be much faster due to Docker caching.
+
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Install [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 3. Clone this repo and open in VS Code
@@ -49,7 +51,7 @@ No local Ruby installation required. Just need Docker and VS Code.
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/Barsu5489/StockManager-System
 cd inventory_system
 
 # Install dependencies

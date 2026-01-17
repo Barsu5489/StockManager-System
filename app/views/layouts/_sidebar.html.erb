@@ -60,7 +60,7 @@
       <div class="flex-1 min-w-0">
         <p class="text-sm font-medium text-text-primary truncate"><%= Current.session&.user&.email_address %></p>
       </div>
-      <%= button_to session_path, method: :delete, class: "p-1.5 text-text-secondary hover:text-text-primary hover:bg-dark-700 rounded-lg transition-colors duration-150 cursor-pointer", title: "Logout" do %>
+      <%= button_to session_path, method: :delete, data: { turbo: false }, class: "p-1.5 text-text-secondary hover:text-text-primary hover:bg-dark-700 rounded-lg transition-colors duration-150 cursor-pointer", title: "Logout" do %>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
         </svg>
