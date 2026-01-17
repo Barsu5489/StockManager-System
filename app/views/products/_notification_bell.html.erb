@@ -1,0 +1,11 @@
+<div id="notification-bell">
+  <% bell_count = low_stock_count %>
+  <%= link_to products_path(filter: 'low_stock'), class: "relative inline-flex p-2.5 bg-dark-800 hover:bg-dark-700 border #{bell_count > 0 ? 'border-accent-amber' : 'border-dark-600'} rounded-lg transition-colors duration-150", title: "Low stock alerts" do %>
+    <svg class="w-5 h-5 <%= bell_count > 0 ? 'text-accent-amber' : 'text-text-secondary' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+    </svg>
+    <% if bell_count > 0 %>
+      <span class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 min-w-5 h-5 flex items-center justify-center bg-accent-amber text-dark-900 text-xs font-bold rounded-full px-1.5"><%= bell_count %></span>
+    <% end %>
+  <% end %>
+</div>
