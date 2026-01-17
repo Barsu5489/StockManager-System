@@ -1,14 +1,25 @@
 <div id="low-stock-alert">
   <% if low_stock_products.any? %>
-    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
-      <div class="flex items-center">
-        <span class="text-amber-600 text-xl mr-2">⚠</span>
-        <div>
-          <h3 class="font-semibold text-amber-800">Low Stock Alert</h3>
-          <p class="text-amber-700 text-sm">
-            <%= low_stock_products.count %> product(s) below threshold (<%= Product::LOW_STOCK_THRESHOLD %> units):
-            <strong><%= low_stock_products.pluck(:name).join(", ") %></strong>
+    <div class="bg-dark-800 border border-accent-amber/30 rounded-xl p-4 mb-6">
+      <div class="flex items-start gap-3">
+        <div class="w-10 h-10 bg-accent-amber/10 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-accent-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div class="flex-1">
+          <h3 class="font-semibold text-accent-amber">Low Stock Alert</h3>
+          <p class="text-text-secondary text-sm mt-1">
+            <span class="text-text-primary font-medium"><%= low_stock_products.count %></span> product(s) below threshold (<%= Product::LOW_STOCK_THRESHOLD %> units)
           </p>
+          <div class="flex flex-wrap gap-2 mt-3">
+            <% low_stock_products.each do |product| %>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent-amber/10 text-accent-amber text-xs font-medium rounded-full">
+                <%= product.name %>
+                <span class="text-accent-amber/60">(<%= product.quantity %>)</span>
+              </span>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>
