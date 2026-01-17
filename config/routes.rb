@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
   end
   resource :session
+  resource :registration, only: [:new, :create]
   resources :passwords, param: :token
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
