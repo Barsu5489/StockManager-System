@@ -22,7 +22,23 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="min-h-screen bg-gray-50">
+    <% if authenticated? %>
+      <nav class="bg-white shadow-sm mb-6">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+          <div class="flex items-center gap-4">
+            <%= link_to "Inventory System", root_path, class: "font-bold text-xl text-gray-800" %>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm text-gray-600"><%= Current.session&.user&.email_address %></span>
+            <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer" %>
+          </div>
+        </div>
+      </nav>
+    <% end %>
+
+    <main class="max-w-7xl mx-auto px-4">
+      <%= yield %>
+    </main>
   </body>
 </html>
