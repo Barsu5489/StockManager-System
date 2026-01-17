@@ -1,9 +1,18 @@
 <div id="<%= dom_id product %>" class="w-full my-5 p-4 border rounded-lg <%= 'border-red-300 bg-red-50' if product.low_stock? %>">
   <div class="flex justify-between items-start">
-    <div class="flex-1">
-      <h3 class="text-lg font-semibold"><%= product.name %></h3>
-      <p class="text-gray-600 text-sm"><%= product.description %></p>
-      <p class="text-gray-800 font-medium mt-2">$<%= number_with_precision(product.price, precision: 2) %></p>
+    <div class="flex items-start gap-4 flex-1">
+      <% if product.image.attached? %>
+        <%= image_tag product.image, class: "w-16 h-16 object-cover rounded-md" %>
+      <% else %>
+        <div class="w-16 h-16 bg-gray-200 rounded-md flex items-center justify-center text-gray-400 text-xs">
+          No image
+        </div>
+      <% end %>
+      <div>
+        <h3 class="text-lg font-semibold"><%= product.name %></h3>
+        <p class="text-gray-600 text-sm"><%= product.description %></p>
+        <p class="text-gray-800 font-medium mt-2">$<%= number_with_precision(product.price, precision: 2) %></p>
+      </div>
     </div>
 
     <div class="text-right">
