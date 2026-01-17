@@ -1,2 +1,17 @@
+<%
+  all_products = Current.session.user.products
+  low_stock_products = all_products.low_stock
+  total_products = all_products.count
+  total_value = all_products.sum { |p| p.price * p.quantity }
+  low_stock_count = low_stock_products.count
+  in_stock_count = total_products - low_stock_count
+%>
 <%= turbo_stream.replace @product %>
-<%= turbo_stream.replace "low-stock-alert", partial: "low_stock_alert", locals: { low_stock_products: Current.session.user.products.low_stock } %>
+<%= turbo_stream.replace "low-stock-alert", partial: "low_stock_alert", locals: { low_stock_products: low_stock_products } %>
+<%= turbo_stream.replace "stats-cards", partial: "stats_cards", locals: {
+  total_products: total_products,
+  total_value: total_value,
+  in_stock_count: in_stock_count,
+  low_stock_count: low_stock_count
+} %>
+<%= turbo_stream.replace "notification-bell", partial: "notification_bell", locals: { low_stock_count: low_stock_count } %>
