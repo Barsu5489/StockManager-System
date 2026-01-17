@@ -52,7 +52,7 @@ No local Ruby installation required. Just need Docker and VS Code.
 ```bash
 # Clone the repository
 git clone https://github.com/Barsu5489/StockManager-System
-cd inventory_system
+cd StockManager-System
 
 # Install dependencies
 bundle install
