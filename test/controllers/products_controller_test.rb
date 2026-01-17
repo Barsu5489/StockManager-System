@@ -12,7 +12,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get products_url
     assert_response :success
-    assert_select "h1", "Inventory"
+    assert_select "h1", "Products"
   end
 
   test "index should display products" do
@@ -24,7 +24,8 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   test "index should show low stock alert when products are low" do
     get products_url
     assert_response :success
-    assert_match "Low Stock Alert", response.body
+    # Low stock is now shown in sidebar and notification bell, not as a banner
+    assert_match "Low Stock", response.body
   end
 
   # Search and Filter
@@ -158,5 +159,36 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     reset!
     get products_url
     assert_redirected_to new_session_url
+  end
+
+  # User isolation
+  test "should not show other users products in index" do
+    get products_url
+    assert_response :success
+    assert_no_match "Other User Product", response.body
+  end
+
+  test "should not access other users product" do
+    other_product = products(:other_user_product)
+    get product_url(other_product)
+    assert_redirected_to products_path
+    follow_redirect!
+    assert_match "Product not found", response.body
+  end
+
+  test "should not update other users product" do
+    other_product = products(:other_user_product)
+    patch product_url(other_product), params: { product: { name: "Hacked" } }
+    assert_redirected_to products_path
+    other_product.reload
+    assert_not_equal "Hacked", other_product.name
+  end
+
+  test "should not delete other users product" do
+    other_product = products(:other_user_product)
+    assert_no_difference("Product.count") do
+      delete product_url(other_product)
+    end
+    assert_redirected_to products_path
   end
 end

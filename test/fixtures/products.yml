@@ -5,21 +5,32 @@ one:
   description: A standard widget
   price: 19.99
   quantity: 25
+  user: one
 
 two:
   name: Gadget
   description: A fancy gadget
   price: 49.99
   quantity: 5
+  user: one
 
 low_stock:
   name: Low Stock Item
   description: Almost out of stock
   price: 9.99
   quantity: 3
+  user: one
 
 out_of_stock:
   name: Out of Stock Item
   description: No stock remaining
   price: 29.99
   quantity: 0
+  user: one
+
+other_user_product:
+  name: Other User Product
+  description: Belongs to another user
+  price: 15.99
+  quantity: 10
+  user: two

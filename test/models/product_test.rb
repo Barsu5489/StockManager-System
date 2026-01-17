@@ -3,8 +3,14 @@ require "test_helper"
 class ProductTest < ActiveSupport::TestCase
   # Validations
   test "should be valid with all required attributes" do
-    product = Product.new(name: "Test Product", price: 10.00, quantity: 5)
+    product = Product.new(name: "Test Product", price: 10.00, quantity: 5, user: users(:one))
     assert product.valid?
+  end
+
+  test "should require user" do
+    product = Product.new(name: "Test", price: 10.00, quantity: 5)
+    assert_not product.valid?
+    assert_includes product.errors[:user], "must exist"
   end
 
   test "should require name" do

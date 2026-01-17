@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy increase_stock decrease_stock ]
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   # GET /products or /products.json or /products.csv
   def index
@@ -102,5 +103,13 @@ class ProductsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def product_params
       params.expect(product: [ :name, :description, :price, :quantity, :image ])
+    end
+
+    def record_not_found
+      respond_to do |format|
+        format.html { redirect_to products_path, alert: "Product not found." }
+        format.json { head :not_found }
+        format.any { head :not_found }
+      end
     end
 end
