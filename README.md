@@ -130,26 +130,6 @@ open coverage/index.html
                       └──────────────────┘
 ```
 
-### Key Files
-
-```
-app/
-├── controllers/
-│   ├── products_controller.rb      # CRUD + stock operations (user-scoped)
-│   ├── sessions_controller.rb      # Login/logout
-│   ├── registrations_controller.rb # Signup
-│   └── concerns/authentication.rb  # Auth logic
-├── models/
-│   ├── product.rb                  # Validations, scopes, belongs_to :user
-│   └── user.rb                     # has_many :products
-├── views/
-│   ├── products/                   # Index, show, form, turbo streams
-│   ├── sessions/                   # Login form
-│   ├── registrations/              # Signup form
-│   └── layouts/application.html.erb # Nav with logout
-docs/
-└── decisions.md                    # 16 documented technical decisions
-```
 
 ### Real-time Updates Flow
 
@@ -169,26 +149,6 @@ Turbo Stream response replaces:
        │
        ▼
 UI updates without page refresh
-```
-
-## Routes
-
-```
-GET    /                      # Products index (root)
-GET    /products              # List user's products
-POST   /products              # Create product
-GET    /products/:id          # Show product
-PATCH  /products/:id          # Update product
-DELETE /products/:id          # Delete product
-POST   /products/:id/increase_stock  # +1 quantity
-POST   /products/:id/decrease_stock  # -1 quantity
-GET    /products.csv          # Export CSV
-
-GET    /registration/new      # Signup form
-POST   /registration          # Create account
-GET    /session/new           # Login form
-POST   /session               # Login
-DELETE /session               # Logout
 ```
 
 ## License
