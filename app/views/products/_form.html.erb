@@ -1,9 +1,8 @@
-<%= form_with(model: product, class: "contents") do |form| %>
+<%= form_with(model: product, class: "space-y-6") do |form| %>
   <% if product.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
-
-      <ul class="list-disc ml-6">
+    <div class="bg-accent-red/10 border-l-4 border-accent-red p-4 rounded-lg">
+      <h2 class="font-semibold text-accent-red"><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul class="list-disc ml-6 mt-2 text-accent-red/80 text-sm">
         <% product.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,38 +10,46 @@
     </div>
   <% end %>
 
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": product.errors[:name].none?, "border-red-400 focus:outline-red-600": product.errors[:name].any?}] %>
+  <div>
+    <%= form.label :name, class: "block text-sm font-medium text-text-primary mb-2" %>
+    <%= form.text_field :name, class: "w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors duration-150", placeholder: "Product name" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :description %>
-    <%= form.textarea :description, rows: 4, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": product.errors[:description].none?, "border-red-400 focus:outline-red-600": product.errors[:description].any?}] %>
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-text-primary mb-2" %>
+    <%= form.textarea :description, rows: 4, class: "w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors duration-150 resize-none", placeholder: "Product description (optional)" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :price %>
-    <%= form.text_field :price, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": product.errors[:price].none?, "border-red-400 focus:outline-red-600": product.errors[:price].any?}] %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <%= form.label :price, class: "block text-sm font-medium text-text-primary mb-2" %>
+      <div class="relative">
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary">$</span>
+        <%= form.text_field :price, class: "w-full pl-8 pr-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors duration-150", placeholder: "0.00" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :quantity, class: "block text-sm font-medium text-text-primary mb-2" %>
+      <%= form.number_field :quantity, class: "w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-text-primary placeholder-text-secondary focus:outline-none focus:border-accent-blue focus:ring-1 focus:ring-accent-blue transition-colors duration-150", placeholder: "0", min: 0 %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :quantity %>
-    <%= form.number_field :quantity, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": product.errors[:quantity].none?, "border-red-400 focus:outline-red-600": product.errors[:quantity].any?}] %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :image %>
+  <div>
+    <%= form.label :image, class: "block text-sm font-medium text-text-primary mb-2" %>
     <% if product.image.attached? %>
-      <div class="mt-2 mb-3">
-        <%= image_tag product.image, class: "w-32 h-32 object-cover rounded-md" %>
-        <p class="text-sm text-gray-500 mt-1">Current image</p>
+      <div class="mb-3 flex items-center gap-4">
+        <%= image_tag product.image, class: "w-20 h-20 object-cover rounded-lg border border-dark-600" %>
+        <span class="text-sm text-text-secondary">Current image</span>
       </div>
     <% end %>
-    <%= form.file_field :image, accept: "image/*", class: "block mt-2 w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" %>
+    <div class="relative">
+      <%= form.file_field :image, accept: "image/*", class: "w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-text-primary file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded-md file:bg-dark-600 file:text-text-primary file:font-medium file:cursor-pointer hover:file:bg-dark-500 transition-colors duration-150" %>
+    </div>
   </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  <div class="flex items-center gap-4 pt-4 border-t border-dark-600">
+    <%= form.submit class: "px-6 py-3 bg-accent-blue hover:bg-accent-blue-hover rounded-lg text-white font-medium cursor-pointer transition-colors duration-150" %>
+    <%= link_to "Cancel", products_path, class: "px-6 py-3 bg-transparent hover:bg-dark-700 border border-dark-600 rounded-lg text-text-secondary hover:text-text-primary font-medium transition-colors duration-150" %>
   </div>
 <% end %>
