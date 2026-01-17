@@ -1,13 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  description: MyText
-  price: 9.99
-  quantity: 1
+  name: Widget
+  description: A standard widget
+  price: 19.99
+  quantity: 25
 
 two:
-  name: MyString
-  description: MyText
+  name: Gadget
+  description: A fancy gadget
+  price: 49.99
+  quantity: 5
+
+low_stock:
+  name: Low Stock Item
+  description: Almost out of stock
   price: 9.99
-  quantity: 1
+  quantity: 3
+
+out_of_stock:
+  name: Out of Stock Item
+  description: No stock remaining
+  price: 29.99
+  quantity: 0
