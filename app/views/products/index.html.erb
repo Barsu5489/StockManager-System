@@ -16,6 +16,21 @@
     <%= link_to "New product", new_product_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
   </div>
 
+  <div class="mb-6 flex gap-4 items-center">
+    <%= form_with url: products_path, method: :get, class: "flex-1 flex gap-2" do |f| %>
+      <%= f.text_field :query, value: params[:query], placeholder: "Search products...", class: "flex-1 rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      <%= f.submit "Search", class: "rounded-md px-4 py-2 bg-gray-600 hover:bg-gray-500 text-white font-medium cursor-pointer" %>
+      <% if params[:query].present? || params[:filter].present? %>
+        <%= link_to "Clear", products_path, class: "rounded-md px-4 py-2 bg-gray-200 hover:bg-gray-100 font-medium" %>
+      <% end %>
+    <% end %>
+
+    <div class="flex gap-2">
+      <%= link_to "All", products_path, class: "rounded-md px-3 py-2 #{params[:filter].blank? ? 'bg-blue-600 text-white' : 'bg-gray-200'} font-medium text-sm" %>
+      <%= link_to "Low Stock", products_path(filter: "low_stock"), class: "rounded-md px-3 py-2 #{params[:filter] == 'low_stock' ? 'bg-amber-600 text-white' : 'bg-gray-200'} font-medium text-sm" %>
+    </div>
+  </div>
+
   <div id="products" class="space-y-4">
     <% if @products.any? %>
       <% @products.each do |product| %>
