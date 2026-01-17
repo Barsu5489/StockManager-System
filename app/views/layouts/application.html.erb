@@ -10,35 +10,31 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="min-h-screen bg-gray-50">
+  <body class="min-h-screen bg-dark-900 text-text-primary">
     <% if authenticated? %>
-      <nav class="bg-white shadow-sm mb-6">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-          <div class="flex items-center gap-4">
-            <%= link_to "Inventory System", root_path, class: "font-bold text-xl text-gray-800" %>
-          </div>
-          <div class="flex items-center gap-4">
-            <span class="text-sm text-gray-600"><%= Current.session&.user&.email_address %></span>
-            <%= button_to "Logout", session_path, method: :delete, class: "text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer" %>
-          </div>
-        </div>
-      </nav>
-    <% end %>
+      <%= render "layouts/sidebar" %>
 
-    <main class="max-w-7xl mx-auto px-4">
-      <%= yield %>
-    </main>
+      <main class="ml-60 min-h-screen">
+        <div class="p-8">
+          <%= yield %>
+        </div>
+      </main>
+    <% else %>
+      <main class="min-h-screen">
+        <%= yield %>
+      </main>
+    <% end %>
   </body>
 </html>
