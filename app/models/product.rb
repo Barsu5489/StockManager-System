@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   LOW_STOCK_THRESHOLD = 10
 
+  has_one_attached :image
+
   scope :low_stock, -> { where("quantity <= ?", LOW_STOCK_THRESHOLD) }
   scope :search, ->(query) { where("name LIKE ? OR description LIKE ?", "%#{query}%", "%#{query}%") }
 
