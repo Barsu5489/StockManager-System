@@ -1,2 +1,2 @@
 <%= turbo_stream.replace @product %>
-<%= turbo_stream.replace "low-stock-alert", partial: "low_stock_alert", locals: { low_stock_products: Product.low_stock } %>
+<%= turbo_stream.replace "low-stock-alert", partial: "low_stock_alert", locals: { low_stock_products: Current.session.user.products.low_stock } %>

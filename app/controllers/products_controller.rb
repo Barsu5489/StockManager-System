@@ -3,10 +3,10 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json or /products.csv
   def index
-    @products = Product.all
+    @products = current_user.products
     @products = @products.search(params[:query]) if params[:query].present?
     @products = @products.low_stock if params[:filter] == "low_stock"
-    @low_stock_products = Product.low_stock
+    @low_stock_products = current_user.products.low_stock
 
     respond_to do |format|
       format.html
@@ -22,7 +22,7 @@ class ProductsController < ApplicationController
 
   # GET /products/new
   def new
-    @product = Product.new
+    @product = current_user.products.build
   end
 
   # GET /products/1/edit
@@ -31,7 +31,7 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
+    @product = current_user.products.build(product_params)
 
     respond_to do |format|
       if @product.save
@@ -92,7 +92,11 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find(params.expect(:id))
+      @product = current_user.products.find(params.expect(:id))
+    end
+
+    def current_user
+      Current.session.user
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   LOW_STOCK_THRESHOLD = 10
 
+  belongs_to :user
   has_one_attached :image
 
   scope :low_stock, -> { where("quantity <= ?", LOW_STOCK_THRESHOLD) }
