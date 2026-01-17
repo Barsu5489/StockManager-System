@@ -1,12 +1,19 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy increase_stock decrease_stock ]
 
-  # GET /products or /products.json
+  # GET /products or /products.json or /products.csv
   def index
     @products = Product.all
     @products = @products.search(params[:query]) if params[:query].present?
     @products = @products.low_stock if params[:filter] == "low_stock"
     @low_stock_products = Product.low_stock
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        send_data @products.to_csv, filename: "inventory-#{Date.current}.csv", type: "text/csv"
+      end
+    end
   end
 
   # GET /products/1 or /products/1.json
