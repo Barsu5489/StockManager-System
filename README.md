@@ -1,24 +1,196 @@
-# README
+# Inventory Management System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A real-time inventory management system built with Ruby on Rails 8, Hotwire, and Tailwind CSS. Each user has their own private inventory with full CRUD operations, real-time stock tracking, and low stock notifications.
 
-Things you may want to cover:
+## Table of Contents
 
-* Ruby version
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Technical Decisions](#technical-decisions)
+- [Testing](#testing)
+- [Architecture](#architecture)
 
-* System dependencies
+## Features
 
-* Configuration
+### Core Features
+- **User Authentication**: Signup, login, logout with Rails 8 built-in authentication
+- **Multi-Tenant Inventory**: Each user has their own private product inventory
+- **Product Management**: Full CRUD operations (name, description, price, quantity)
+- **Real-time Stock Tracking**: Live updates using Hotwire Turbo Streams
+- **Low Stock Notifications**: Automatic alerts when inventory falls below 10 units
 
-* Database creation
+### Bonus Features
+- **Search & Filtering**: Search products by name/description, filter by low stock
+- **Image Upload**: Product images via Active Storage
+- **CSV Export**: Export inventory data with current filters applied
 
-* Database initialization
+## Quick Start
 
-* How to run the test suite
+### Option 1: Dev Container (Recommended)
 
-* Services (job queues, cache servers, search engines, etc.)
+No local Ruby installation required. Just need Docker and VS Code.
 
-* Deployment instructions
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. Install [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Clone this repo and open in VS Code
+4. Click "Reopen in Container" when prompted (or run `Dev Containers: Reopen in Container` from command palette)
+5. Wait for container to build (installs Ruby, Node.js, dependencies)
+6. Run `bin/rails server -b 0.0.0.0` in the terminal
+7. Visit `http://localhost:3000`
 
-* ...
+### Option 2: Local Installation
+
+#### Prerequisites
+
+- Ruby 3.2+
+- Bundler (`gem install bundler`)
+
+#### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd inventory_system
+
+# Install dependencies
+bundle install
+
+# Setup database with Active Storage
+bin/rails db:create db:migrate
+
+# Start the server
+bin/dev
+```
+
+### Usage
+
+1. Visit `http://localhost:3000`
+2. Click "Sign up" to create an account
+3. Start adding products to your inventory
+
+### Default Admin (from seeds)
+
+If you run `bin/rails db:seed`:
+- **Email**: admin@example.com
+- **Password**: password123
+
+## Technical Decisions
+
+All technical decisions are documented in detail in [docs/decisions.md](docs/decisions.md).
+
+### Summary
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Database | SQLite | Zero config, Rails 8 default, portable |
+| Authentication | Rails 8 built-in | Simple, no gems, full control |
+| Real-time | Hotwire Turbo Streams | Native Rails, no JS framework needed |
+| CSS | Tailwind CSS v4 | Utility-first, Rails 8 default |
+| Image Upload | Active Storage | Built-in, works with local/cloud storage |
+| Testing | Minitest | Rails default, fast, simple |
+| Multi-tenancy | User-scoped queries | Data isolation, security |
+
+## Testing
+
+### Run Tests
+
+```bash
+# Run all tests
+bin/rails test
+
+# Run with coverage report
+bin/rails test
+open coverage/index.html
+```
+
+### Test Coverage
+
+- **53+ tests** covering:
+  - Product model validations and scopes
+  - User model and authentication
+  - Controller CRUD operations
+  - User isolation (can't access other users' products)
+  - Stock adjustment with Turbo Streams
+  - CSV export functionality
+
+## Architecture
+
+### Data Model
+
+```
+┌─────────────┐       ┌──────────────────┐
+│    User     │       │     Product      │
+├─────────────┤       ├──────────────────┤
+│ email       │───────│ user_id (FK)     │
+│ password    │   1:N │ name             │
+│ sessions    │       │ description      │
+│ products    │       │ price            │
+└─────────────┘       │ quantity         │
+                      │ image (attached) │
+                      └──────────────────┘
+```
+
+### Key Files
+
+```
+app/
+├── controllers/
+│   ├── products_controller.rb      # CRUD + stock operations (user-scoped)
+│   ├── sessions_controller.rb      # Login/logout
+│   ├── registrations_controller.rb # Signup
+│   └── concerns/authentication.rb  # Auth logic
+├── models/
+│   ├── product.rb                  # Validations, scopes, belongs_to :user
+│   └── user.rb                     # has_many :products
+├── views/
+│   ├── products/                   # Index, show, form, turbo streams
+│   ├── sessions/                   # Login form
+│   ├── registrations/              # Signup form
+│   └── layouts/application.html.erb # Nav with logout
+docs/
+└── decisions.md                    # 16 documented technical decisions
+```
+
+### Real-time Updates Flow
+
+```
+User clicks +/- button
+       │
+       ▼
+POST /products/:id/increase_stock (or decrease_stock)
+       │
+       ▼
+Controller updates quantity
+       │
+       ▼
+Turbo Stream response replaces:
+  1. Product card (updated quantity)
+  2. Low stock alert (if threshold crossed)
+       │
+       ▼
+UI updates without page refresh
+```
+
+## Routes
+
+```
+GET    /                      # Products index (root)
+GET    /products              # List user's products
+POST   /products              # Create product
+GET    /products/:id          # Show product
+PATCH  /products/:id          # Update product
+DELETE /products/:id          # Delete product
+POST   /products/:id/increase_stock  # +1 quantity
+POST   /products/:id/decrease_stock  # -1 quantity
+GET    /products.csv          # Export CSV
+
+GET    /registration/new      # Signup form
+POST   /registration          # Create account
+GET    /session/new           # Login form
+POST   /session               # Login
+DELETE /session               # Logout
+```
+
+## License
+
+MIT
