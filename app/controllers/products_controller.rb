@@ -60,14 +60,20 @@ class ProductsController < ApplicationController
   # POST /products/1/increase_stock
   def increase_stock
     @product.increment!(:quantity)
-    redirect_to products_path, notice: "Stock increased for #{@product.name}."
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to products_path, notice: "Stock increased for #{@product.name}." }
+    end
   end
 
   # POST /products/1/decrease_stock
   def decrease_stock
     if @product.quantity > 0
       @product.decrement!(:quantity)
-      redirect_to products_path, notice: "Stock decreased for #{@product.name}."
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to products_path, notice: "Stock decreased for #{@product.name}." }
+      end
     else
       redirect_to products_path, alert: "Stock cannot go below zero."
     end
