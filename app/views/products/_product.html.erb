@@ -1,18 +1,29 @@
-<div id="<%= dom_id product %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= product.name %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= product.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Price:</strong>
-    <%= product.price %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Quantity:</strong>
-    <%= product.quantity %>
+<div id="<%= dom_id product %>" class="w-full my-5 p-4 border rounded-lg <%= 'border-red-300 bg-red-50' if product.low_stock? %>">
+  <div class="flex justify-between items-start">
+    <div class="flex-1">
+      <h3 class="text-lg font-semibold"><%= product.name %></h3>
+      <p class="text-gray-600 text-sm"><%= product.description %></p>
+      <p class="text-gray-800 font-medium mt-2">$<%= number_with_precision(product.price, precision: 2) %></p>
+    </div>
+
+    <div class="text-right">
+      <div class="flex items-center space-x-2">
+        <%= button_to decrease_stock_product_path(product), method: :post, class: "w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 font-bold cursor-pointer", disabled: product.quantity == 0 do %>
+          -
+        <% end %>
+
+        <span class="text-xl font-bold w-12 text-center <%= 'text-red-600' if product.low_stock? %>">
+          <%= product.quantity %>
+        </span>
+
+        <%= button_to increase_stock_product_path(product), method: :post, class: "w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 font-bold cursor-pointer" do %>
+          +
+        <% end %>
+      </div>
+
+      <% if product.low_stock? %>
+        <p class="text-red-600 text-sm mt-1 font-medium">Low Stock!</p>
+      <% end %>
+    </div>
   </div>
 </div>
