@@ -26,21 +26,7 @@ A real-time inventory management system built with Ruby on Rails 8, Hotwire, and
 
 ## Quick Start
 
-### Option 1: Dev Container (Recommended)
-
-No local Ruby installation required. Just need Docker and VS Code.
-
-> **Note:** The first time you build the Dev Container, it may take 5-15 minutes to download the Docker image, install Ruby, and run `bundle install`. Subsequent starts will be much faster due to Docker caching.
-
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-2. Install [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-3. Clone this repo and open in VS Code
-4. Click "Reopen in Container" when prompted (or run `Dev Containers: Reopen in Container` from command palette)
-5. Wait for container to build (installs Ruby, Node.js, dependencies)
-6. Run `bin/rails server -b 0.0.0.0` in the terminal
-7. Visit `http://localhost:3000`
-
-### Option 2: Local Installation
+### Option 1: Local Installation
 
 #### Prerequisites
 
@@ -58,11 +44,25 @@ cd StockManager-System
 bundle install
 
 # Setup database with Active Storage
-bin/rails db:create db:migrate
+bin/rails db:create db:migrate db:seed
 
 # Start the server
 bin/dev
 ```
+
+### Option 2: Dev Container (Recommended)
+
+No local Ruby installation required. Just need Docker and VS Code.
+
+> **Note:** The first time you build the Dev Container, it may take 5-15 minutes to download the Docker image, install Ruby, and run `bundle install`. Subsequent starts will be much faster due to Docker caching.
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. Install [VS Code](https://code.visualstudio.com/) with [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Clone this repo and open in VS Code
+4. Click "Reopen in Container" when prompted (or run `Dev Containers: Reopen in Container` from command palette)
+5. Wait for container to build (installs Ruby, Node.js, dependencies)
+6. Run `bin/rails server -b 0.0.0.0` in the terminal
+7. Visit `http://localhost:3000`
 
 ### Usage
 
